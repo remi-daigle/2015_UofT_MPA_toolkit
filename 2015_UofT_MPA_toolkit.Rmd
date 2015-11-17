@@ -1,0 +1,127 @@
+---
+title: "Assessing commercial fishery costs and benefits related to MPA network design"
+author: "Remi Daigle"
+date: "November 17, 2015"
+output: ioslides_presentation
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# load packages
+library(rgdal)
+library(rgeos)
+```
+
+## The 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+<a href="pubs.html" style="text-decoration:none;"><span class="fa fa-book fa-5x"></span></a>
+<a href="pubs.html" style="text-decoration: none;"><span class="fa fa-file-text fa-5x"></span></a>
+<a href="pubs.html" style="text-decoration: none;"><span class="fa fa-code fa-5x"></span></a>
+<a href="pubs.html" style="text-decoration: none;"><span class="fa fa-database fa-5x"></span></a>
+
+
+## The question:
+**If MPA networks follow designn protocol X, Y, or Z, does the fishing industry stand to suffer or benefit financially?**
+
+Atlantic cod case study scenarios:
+
+- Status Quo
+- Maximum Distance
+- Fixed Distance
+- Targeted
+
+## Scenario 1: Status Quo {.columns-2}
+```{r,echo=FALSE,results='hide',fig.width=4,fig.height=5}
+#load shapefiles
+proj  <- "+proj=lcc +lat_1=40 +lat_2=70 +lat_0=-71.3 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+
+eez <- readOGR(dsn=getwd(), layer = "eez_iho_union_v2")
+eez <- gUnionCascaded(eez[eez$marregion!="Canadian part of the Davis Strait",])
+eez <- spTransform(eez,CRS(proj))
+
+shp <- readOGR(dsn=getwd(), layer = "Status_quo_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,1,0),xpd=TRUE,bg=NA)
+plot(eez,lwd=2)
+plot(shp,col="purple",add=TRUE,border='purple')
+legend('top',fill=c('purple'),legend=c('MPA'),bty = 'n',cex=1.7,inset=-0.08)
+```
+
+- only includes currently established MPAs
+
+
+## Scenario 2: Maximum Distance {.columns-2}
+```{r,echo=FALSE,results='hide',fig.width=4,fig.height=5}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_maxdist_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,1,0),xpd=TRUE,bg=NA)
+plot(eez,lwd=2)
+plot(shp,col="green",add=TRUE,border='green')
+legend('top',fill=c('green'),legend=c('MPA'),bty = 'n',cex=1.7,inset=-0.08)
+```
+
+- minimizes population connectivity
+- places MPAs as far as possible from nearest neighbours
+
+## Scenario 3: Fixed Distance {.columns-2}
+```{r,echo=FALSE,results='hide',fig.width=4,fig.height=5}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_fixed_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,1,0),xpd=TRUE,bg=NA)
+plot(eez,lwd=2)
+plot(shp,col="red",add=TRUE,border='red')
+legend('top',fill=c('red'),legend=c('MPA'),bty = 'n',cex=1.7,inset=-0.08)
+```
+
+- optimizizes population connectivity
+- places MPAs at a fixed distance from the nearest neighbours
+- the distance is biologically relevant (i.e. dispersal distance)
+
+## Scenario 4: Targeted {.columns-2}
+```{r,echo=FALSE,results='hide',fig.width=4,fig.height=5}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_targeted_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,1,0),xpd=TRUE,bg=NA)
+plot(eez,lwd=2)
+plot(shp,col="blue",add=TRUE,border='blue')
+legend('top',fill=c('blue','yellow'),legend=c('MPA','Breeding'),bty = 'n',cex=1.7,inset=-0.08,ncol = 2)
+```
+
+- maximizes biological relevance
+- protects "breeding areas" by default
+- places remaining MPAs at a fixed distance from the nearest neighbours
+
+
+## Scenario 4: Targeted {.columns-2}
+```{r,echo=FALSE,results='hide',fig.width=4,fig.height=5}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_targeted_1")
+shp <- spTransform(shp,CRS(proj))
+
+cod <- readOGR(dsn=getwd(), layer = "cod_breeding")
+cod <- spTransform(cod,CRS(proj))
+#plot
+par(mar=c(0,0,1,0),xpd=TRUE,bg=NA)
+plot(eez,lwd=2,)
+plot(shp,col="blue",add=TRUE,border='blue')
+plot(cod[2:15,],col="yellow",add=TRUE,border='yellow')
+legend('top',fill=c('blue','yellow'),legend=c('MPA','Breeding'),bty = 'n',cex=1.7,inset=-0.08,ncol = 2)
+```
+
+- maximizes biological relevance
+- protects "breeding areas" by default
+- places remaining MPAs at a fixed distance from the nearest neighbours
+
+## The model:
+<center><img src="model.png" height="500px"/></center>

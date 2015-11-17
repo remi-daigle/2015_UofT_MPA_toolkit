@@ -1,0 +1,97 @@
+Assessing commercial fishery costs and benefits related to MPA network design
+========================================================
+author: Remi Daigle
+
+```{r, echo=FALSE}
+# load packages
+library(rgdal)
+library(rgeos)
+```
+
+The question:
+========================================================
+
+**If MPA networks follow designn protocol X, Y, or Z, does the fishing industry stand to suffer or benefit financially?**
+
+Atlantic cod case study scenarios:
+- Status Quo
+- Maximum Distance
+- Fixed Distance
+- Targeted
+
+Scenario 1: Status Quo
+========================================================
+left:60%
+```{r,echo=FALSE,results='hide',fig=TRUE}
+#load shapefiles
+proj  <- "+proj=lcc +lat_1=40 +lat_2=70 +lat_0=-71.3 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+
+eez <- readOGR(dsn=getwd(), layer = "eez_iho_union_v2")
+eez <- gUnionCascaded(eez[eez$marregion!="Canadian part of the Davis Strait",])
+eez <- spTransform(eez,CRS(proj))
+
+shp <- readOGR(dsn=getwd(), layer = "Status_quo_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,0,0))
+plot(eez)
+plot(shp,col="purple",add=TRUE,border='purple')
+```
+***
+- only includes currently established MPAs
+
+
+Scenario 2: Maximum Distance
+========================================================
+left:60%
+```{r,echo=FALSE,results='hide',fig=TRUE}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_maxdist_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,0,0))
+plot(eez)
+plot(shp,col="green",add=TRUE,border='green')
+```
+***
+- minimizes population connectivity
+- places MPAs as far as possible from nearest neighbours
+
+Scenario 3: Fixed Distance
+========================================================
+left:60%
+```{r,echo=FALSE,results='hide',fig=TRUE}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_fixed_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,0,0))
+plot(eez)
+plot(shp,col="red",add=TRUE,border='red')
+```
+***
+- optimizizes population connectivity
+- places MPAs at a fixed distance from the nearest neighbours
+- the distance is biologically relevant (i.e. dispersal distance)
+
+Scenario 4: Targeted
+========================================================
+left:60%
+```{r,echo=FALSE,results='hide',fig=TRUE}
+#load shapefiles
+shp <- readOGR(dsn=getwd(), layer = "MPAs_targeted_1")
+shp <- spTransform(shp,CRS(proj))
+
+#plot
+par(mar=c(0,0,0,0))
+plot(eez)
+plot(shp,col="blue",add=TRUE,border='blue')
+```
+***
+- maximizes biological relevance
+- protects "breeding areas" by default
+- places remaining MPAs at a fixed distance from the nearest neighbours
+

@@ -302,14 +302,14 @@ ggplot(fish_value,aes(x=time,y=dist,colour=scenario))+
 
 ## Results: Present Value (SDR = 0.015)
 ```{r,echo=FALSE,message=FALSE,warning=FALSE,results='hide',fig.width=8,fig.height=5,dev.args = list(bg = 'transparent')}
-ggplot(fish_value,aes(x=time,y=dist,colour=scenario))+
+ggplot(fish_value,aes(x=time,y=net_catch_value_SDRA_cumsum,colour=scenario))+
     geom_smooth(cex=2)+
     theme_classic()+
     theme(legend.position="top",
           text=element_text(size=18),
           panel.background = element_rect(fill = "transparent",colour = NA),
           plot.background = element_rect(fill = "transparent",colour = NA))+
-    labs(x="Year",y="Mean distance from shore (km)")+
+    labs(x="Year",y=expression(paste("CUmulative Net Present Value (10"^"6"," CAD)",sep="")))+
     scale_colour_manual(values=protect_scen_colour,
                         labels=protect_scen_names,name="")
 ```

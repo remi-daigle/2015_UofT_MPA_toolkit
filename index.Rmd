@@ -194,6 +194,7 @@ Fecundity:
 
 <div style="color:transparent;">
 lack of breaks is so stupid
+so so stupid
 </div>
 
 **Built-in functionality**
@@ -358,3 +359,14 @@ ggplot(dplyr::filter(fish_value,time==2051),aes(x=scenario,y=net_catch_value_SDR
     geom_violin(width=0.3, alpha = 0.3)+
     geom_hline(yintercept=0,lty=2)
 ```
+
+## Conclusions & Future directions
+
+- The toolbox is a great way to evaluate MPA design strategies
+- Some of the modules have room for improvent:
+  - Fishermen behaviour
+  - Dispersal
+  
+**Future:**
+
+Implement the toolbox on the BC-cumumber project since we have pre-defined connectivity matrices.
